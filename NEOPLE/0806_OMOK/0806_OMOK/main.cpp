@@ -21,6 +21,7 @@ using namespace std;
 
 void drawBoard(int board[][HEIGHT], int x, int y);
 bool isWin(int board[][HEIGHT], int player);
+bool isWin2(int board[][HEIGHT], int x, int y);
 
 int main()
 {
@@ -32,6 +33,8 @@ int main()
 	char input = 0;
 	int turnCount = 1;
 
+	bool isChangePlayer = false;
+
 	for (int i = 0; i < HEIGHT; i++)
 	{
 		for (int j = 0; j < WIDTH; j++)
@@ -42,6 +45,8 @@ int main()
 
 	while (true)
 	{
+		isChangePlayer = false;
+
 		char ch = _getch();
 		system("cls");
 
@@ -77,6 +82,8 @@ int main()
 		}
 		else if (ch == SPACE)
 		{
+			isChangePlayer = true;
+
 			turnCount++;
 
 			if (board[y][x] == BLANK)
@@ -112,13 +119,17 @@ int main()
 			{
 				cout << "백의 승리~!!" << endl;
 			}
+			cout << endl;
 			break;
 		}
-
-		if (player == BLACK)
-			player = WHITE;
-		else
-			player = BLACK;
+		
+		if (isChangePlayer == true)
+		{
+			if (player == BLACK)
+				player = WHITE;
+			else
+				player = BLACK;
+		}
 	}
 
 
@@ -208,11 +219,94 @@ bool isWin(int board[][HEIGHT], int player) // 넘오래걸리는데 게에바임
 				return true;
 		}
 	}
+
+
 	return false;
 }
 
 
+bool isWin2(int board[][HEIGHT], int x, int y) //도전중
+{
+	if (board[x][y] != BLANK)
+	{
+		//x0000
+		if (board[y][x] == board[y][x + 1] &&
+			board[y][x + 1] == board[y][x + 2] &&
+			board[y][x + 2] == board[y][x + 3] &&
+			board[y][x + 3] == board[y][x + 4])
+			return true;
 
+		//0x000
+		else if (board[y][x] == board[y][x - 1] &&
+			board[y][x - 1] == board[y][x + 1] &&
+			board[y][x + 1] == board[y][x + 2] &&
+			board[y][x + 2] == board[y][x + 3])
+			return true;
+
+		//00x00
+		else if (board[y][x] == board[y][x - 1] &&
+			board[y][x - 1] == board[y][x - 2] &&
+			board[y][x - 2] == board[y][x + 1] &&
+			board[y][x + 1] == board[y][x + 2])
+			return true;
+
+		//000x0
+		else if (board[y][x] == board[y][x - 1] &&
+			board[y][x - 1] == board[y][x - 2] &&
+			board[y][x - 2] == board[y][x - 3] &&
+			board[y][x - 3] == board[y][x + 1])
+			return true;
+
+		//0000x
+		else if (board[y][x] == board[y][x - 1] &&
+			board[y][x - 1] == board[y][x - 2] &&
+			board[y][x - 2] == board[y][x - 3] &&
+			board[y][x - 3] == board[y][x - 4])
+			return true;
+
+		//y0000
+		else if (board[y][x] == board[y + 1][x] &&
+			board[y + 1][x] == board[y + 2][x] &&
+			board[y + 2][x] == board[y + 3][x] &&
+			board[y + 3][x] == board[y + 4][x])
+			return true;
+
+		//0y000
+		else if (board[y][x] == board[y - 1][x] &&
+			board[y - 1][x] == board[y + 1][x] &&
+			board[y + 1][x] == board[y + 2][x] &&
+			board[y + 2][x] == board[y + 3][x])
+			return true;
+
+		//00y00
+		else if (board[y][x] == board[y][x - 1] &&
+			board[y][x - 1] == board[y][x - 2] &&
+			board[y][x - 2] == board[y][x + 1] &&
+			board[y][x + 1] == board[y][x + 2])
+			return true;
+
+		//000y0
+		else if (board[y][x] == board[y - 1][x] &&
+			board[y - 1][x] == board[y - 2][x] &&
+			board[y - 2][x] == board[y - 3][x] &&
+			board[y - 3][x] == board[y + 1][x])
+			return true;
+
+		//0000y
+		else if (board[y][x] == board[y - 1][x] &&
+			board[y - 1][x] == board[y - 2][x] &&
+			board[y - 2][x] == board[y - 3][x] &&
+			board[y - 3][x] == board[y - 4][x])
+			return true;
+
+		else
+			false;
+	}
+
+	return false;
+
+	
+}
 
 
 
